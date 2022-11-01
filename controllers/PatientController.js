@@ -10,7 +10,7 @@ module.exports.getPatients = (req, res, next) => {
     });
 }
 
-// Add patient
+// get patient
 module.exports.getPatient = (req, res, next) => {
     console.log('GET request: patients/' + req.params.id);
     // Find a single patient by their id
