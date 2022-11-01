@@ -17,14 +17,12 @@ var ipAddress = process.env.IP;
 var url = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/data';
 mongoose.connect(url, {useNewUrlParser: true});
 
-
 // Connect Local DB
 const db = mongoose.connection;
 db.once('open', function () {
     console.log("Connected to database: " + url)
 });
 db.on('error', console.error.bind(console, 'connection error:'));
-
 
 let patientController = require('./controllers/PatientController');
 
