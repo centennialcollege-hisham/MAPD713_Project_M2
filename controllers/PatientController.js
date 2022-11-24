@@ -14,14 +14,58 @@ module.exports.getPatients = (req, res, next) => {
 module.exports.getPatient = (req, res, next) => {
     console.log('GET request: patients/' + req.params.id);
     // Find a single patient by their id
-    patient.find({_id: req.params.id}).exec(function (error, patients) {
-        if (patients) {
-            res.send(patients)
+    patient.find({_id: req.params.id}).exec(function (error, patient) {
+        if (patient) {
+            res.send(patient)
         } else {
             res.send(404)
         }
     })
 }
+
+// get tests
+module.exports.getTests = (req, res, next) => {
+    // Find a single patient by their id
+    patient.find({_id: req.params.id}).exec(function (error, patient) {
+        if (patient) {
+            res.send(patient )
+        } else {
+            res.send(404)
+        }
+    })
+}
+
+module.exports.addTests = (req, res, next) => {
+    console.log('POST request: patient params = >' + JSON.stringify(req.params));
+    console.log('POST request: patient body = >' + JSON.stringify(req.body));
+
+    if (req.body.title === undefined) {
+        return next(new errors.BadRequestError('title must be supplied'))
+    }
+
+
+    // Find a single patient by their id
+    patient.find({_id: req.params.id}).exec(function (error, patient) {
+        if (patient) {
+
+         patient.
+
+            //save
+            patient.save(function (error, result) {
+                if (error) return next(new Error(JSON.stringify(error.errors)))
+                res.send(201, result)
+            })
+
+
+        } else {
+            res.send(404)
+        }
+    })
+
+
+
+}
+
 
 module.exports.addPatient = (req, res, next) => {
     console.log('POST request: patient params = >' + JSON.stringify(req.params));

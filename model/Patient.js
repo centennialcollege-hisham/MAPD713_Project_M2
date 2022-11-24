@@ -6,9 +6,12 @@ let patientModel =  mongoose.Schema({
     birthdate: String,
     gender: String,
     phone: String,
-    photo: String
+    photo: String,
+    tests: [{
+        title: String,
+    }],
 },{
-    collection: "patients"
+    collection: "patientApp"
 });
 
 module.exports = mongoose.model('Patient', patientModel);
