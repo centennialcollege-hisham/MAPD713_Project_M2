@@ -15,8 +15,6 @@ module.exports = server => {
         }
     });
 
-
-
  // Get all patients
     server.get('/patients', patientController.getPatients)
 

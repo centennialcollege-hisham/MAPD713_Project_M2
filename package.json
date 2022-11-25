@@ -4,8 +4,8 @@
   "description": "Project M2",
   "main": "index.js",
   "engines": {
-    "node": ">=4.1.1",
-    "npm": ">=2.1.x"
+    "node": "14.19.3",
+    "npm": "6.14.17"
   },
   "scripts": {
     "start": "node index.js",
