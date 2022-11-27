@@ -1,6 +1,6 @@
 const errors = require('restify-errors');
 const patientController = require("../controllers/PatientController");
-const patientControllerNew = require("../controllers/PatientControllerNew");
+const recordController = require("../controllers/RecordController");
 const patient = require('../model/Patient')
 
 module.exports = server => {
@@ -16,11 +16,8 @@ module.exports = server => {
     //     }
     // });
 
- // Get all patients
+    // Get all patients
     server.get('/patients', patientController.getPatients)
-
-
-    server.get('/v2/patients', patientControllerNew.getPatients1)
 
 // // Get a patient by  id
     server.get('/patients/:id', patientController.getPatient)
@@ -31,13 +28,19 @@ module.exports = server => {
 // // Delete patient with the given id
     server.del('/patients/:id', patientController.deletePatient)
 //
-//
-// // Get all tests
-//
-//     server.get('/patients/:id/tests', patientController.getTests)
+    // Get all tests
+    server.get('/patients/:id/tests', recordController.getRecords)
 
-
+//     // Get details test for patient
+    server.get('/patients/:id/tests/:testId', recordController.getRecordsById)
+//
+// // Get details test for patient
+//     server.post('/patients/:id/tests', recordController.getRecords)
+//
+// // Get details test for patient
+//     server.put('/patients/:id/tests/:testId', recordController.getRecords)
+//
+// // Get details test for patient
+//     server.del('/patients/:id/tests/:testId', recordController.getRecords)
 
 };
-
-// Create a new patient

@@ -1,9 +1,6 @@
 const Patient = require("../model/Patient");
 const apiResponse = require("../helpers/apiResponse");
-const {getTests} = require("./TestController");
-
-
-
+var mongoose = require("mongoose");
 
 
 // Get all patients
@@ -13,29 +10,40 @@ module.exports.getPatients = (req, res, next) => {
         if (error) return next(new Error(JSON.stringify(error.errors)))
 
 
-
-        res.send(apiResponse.successResponseWithData(1,"",result));
+        apiResponse.successResponseWithData(res, "", result)
         // apiResponse.successResponseWithData(res, "success",
         //     {data: result});
     });
 }
 
 // get patient
-module.exports.getPatient = (req, res, next) => {
-    console.log('GET request: patients/' + req.params.id);
+module.exports.getPatient = async (req, res, next) => {
+    // console.log('GET request: patients/' + req.params.id);
     // Find a single patient by their id
-    Patient.findOne({_id: req.params.id,tests: {
-        $elementMatch: {
-            _id: "6382582e14c1ac0d506beccd"
-        }
-        }}, {tests: 1}).exec(function (error, patient) {
-        if (patient) {
-            res.send(patient.tests) //dfgdfgdfgdfgdfgdg
 
-        } else {
-            res.send(404)
+    //
+    // let result = await Patient.findOne({_id: req.params.id})
+    //
+    // if (result) {
+    //     apiResponse.successResponseWithData(res, "", result)
+    // } else {
+    //     apiResponse.validationErrorWithData(res, "", result)
+    // }
+
+
+    let data = await Patient.findOne({
+            "_id": req.params.id, // patient Id
+        }, {
+            tests: {"$elemMatch": {"_id": mongoose.Types.ObjectId("6382c7eaeb7575253f0c97b5")}} // patient record id
         }
-    })
+    )
+
+    if (!data)
+        res.send(data);
+
+    res.send(200,data.tests[0]);
+
+
 }
 
 // get tests
@@ -43,7 +51,7 @@ module.exports.addTest = (req, res, next) => {
     var update = {tests: req.body}
     var filter = {_id: req.params.id}
     // Find a single patient by their id
-    Patient.findOneAndUpdate(filter,update).exec(
+    Patient.findOneAndUpdate(filter, update).exec(
         function (error, patient) {
             if (patient) {
                 res.send(patient[tests])
@@ -93,7 +101,6 @@ module.exports.addPatient = (req, res, next) => {
                 title: 'asa'
             }]
     });
-
 
 
     //save
