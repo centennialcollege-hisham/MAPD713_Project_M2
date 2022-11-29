@@ -1,6 +1,6 @@
 const Patient = require("../model/Patient");
 const mongoose = require("mongoose");
-const apiResponse = require("../helpers/apiResponse");
+const apiResponse = require("../helpers/ApiResponse");
 
 // Get all test
 module.exports.getRecords = async (req, res, next) => {

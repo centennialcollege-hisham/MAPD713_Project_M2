@@ -13,7 +13,7 @@
     "heroku-postbuild": "npm run build"
   },
   "authors": [
-    "Hisham ABu Sanimeh"
+    "Hisham Abu Sanimeh"
   ],
   "license": "MIT",
   "dependencies": {

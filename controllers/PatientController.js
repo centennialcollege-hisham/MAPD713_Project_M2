@@ -1,5 +1,5 @@
 const Patient = require("../model/Patient");
-const apiResponse = require("../helpers/apiResponse");
+const apiResponse = require("../helpers/ApiResponse");
 var mongoose = require("mongoose");
 
 
