@@ -1,7 +1,6 @@
 const Patient = require("../model/Patient");
 const apiResponse = require("../helpers/apiResponse");
 var mongoose = require("mongoose");
-const errors = require('restify-errors');
 
 
 // Get all patients
@@ -10,17 +9,13 @@ module.exports.getPatients = (req, res, next) => {
     Patient.find({}).exec(function (error, result) {
         if (error) return next(new Error(JSON.stringify(error.errors)))
 
-
         apiResponse.successResponseWithData(res, "", result)
-        // apiResponse.successResponseWithData(res, "success",
-        //     {data: result});
+
     });
 }
 
 // get patient
 module.exports.getPatient = async (req, res, next) => {
-    // console.log('GET request: patients/' + req.params.id);
-    // Find a single patient by their id
 
 
     let result = await Patient.findOne({_id: req.params.id})
@@ -36,8 +31,6 @@ module.exports.getPatient = async (req, res, next) => {
 
 // get patient
 module.exports.updatePatient = async (req, res, next) => {
-    // console.log('GET request: patients/' + req.params.id);
-    // Find a single patient by their id
 
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         apiResponse.validationErrorWithData(
@@ -147,16 +140,13 @@ module.exports.addPatient = (req, res, next) => {
         }]
     });
     var readingValue = newPatients.tests[newPatients.tests.length - 1].reading
-    console.log('reading' + readingValue)
-    console.log('tests size' + newPatients.tests.length - 1)
+
     if (readingValue == '50/90') {
         newPatients.condition = 'normal'
     } else if (readingValue == '60/150') {
         newPatients.condition = 'critical'
 
     }
-
-    // newPatients.tests.push({title: "test hisham"})
 
 
     //save

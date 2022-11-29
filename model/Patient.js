@@ -1,5 +1,4 @@
 let mongoose = require('mongoose');
-let PatientRecords = require('./PatientRecord')
 let patientModel = mongoose.Schema({
     name: {type: String},
     address: {type: String},

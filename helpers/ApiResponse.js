@@ -1,9 +1,10 @@
 exports.successResponse = function (res, msg) {
-    // var data = {
-    //     status: 1,
-    //     message: msg
-    // };
-    // return res.status(200).json(data);
+
+    const resData = {
+        status: 0,
+        message: msg
+    };
+    res.send(200, resData);
 };
 
 exports.successResponseWithData = function (res, msg, data) {
@@ -21,7 +22,7 @@ exports.ErrorResponse = function (res, msg) {
         status: 0,
         message: msg,
     };
-    res.send(400,data);
+    res.send(400, data);
 };
 
 exports.notFoundResponse = function (res, msg) {
@@ -38,7 +39,7 @@ exports.validationErrorWithData = function (res, msg, data) {
         message: msg,
         data: data
     };
-    res.send(400,resData);
+    res.send(400, resData);
 };
 
 exports.unauthorizedResponse = function (res, msg) {

@@ -1,4 +1,3 @@
-const patient = require("../model/Patient");
 const Patient = require("../model/Patient");
 const mongoose = require("mongoose");
 const apiResponse = require("../helpers/apiResponse");
