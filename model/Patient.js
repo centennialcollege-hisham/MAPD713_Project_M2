@@ -1,18 +1,23 @@
 let mongoose = require('mongoose');
 let PatientRecords = require('./PatientRecord')
-let patientModel =  mongoose.Schema({
-    name: String,
-    address: String,
-    birthdate: String,
-    gender: String,
-    phone: String,
-    photo: String,
+let patientModel = mongoose.Schema({
+    name: {type: String},
+    address: {type: String},
+    mobile: {type: String},
+    email: {type: String, required: true},
+    birthdate: {type: String},
+    gender: {type: String},
+    photo: {type: String},
+    condition: {type: String, enum: ['normal', 'critical'], default: 'normal'},
     tests: [
         {
-            title:String
+            date: {type: Date},
+            type: {type: String, enum: ['blood_pressure', 'respiratory_rate', 'blood_oxygen_level', 'heartbeat_rate']},
+            reading:{ type: String},
+
         }
     ]
-},{
+}, {timestamps: true}, {
     collection: "patientApp"
 });
 

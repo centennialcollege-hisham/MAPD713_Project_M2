@@ -21,6 +21,9 @@ module.exports = server => {
 
 // // Get a patient by  id
     server.get('/patients/:id', patientController.getPatient)
+
+    // // update a patient by  id
+    server.put('/patients/:id', patientController.updatePatient)
 //
 // // Create a new patient
     server.post('/patients', patientController.addPatient)

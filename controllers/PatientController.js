@@ -34,6 +34,71 @@ module.exports.getPatient = async (req, res, next) => {
 
 }
 
+// get patient
+module.exports.updatePatient = async (req, res, next) => {
+    // console.log('GET request: patients/' + req.params.id);
+    // Find a single patient by their id
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        apiResponse.validationErrorWithData(
+            res,
+            "Invalid Error.",
+            "Invalid ID"
+        );
+    } else {
+        Patient.findById(req.params.id, function (err, foundPatient) {
+            if (foundPatient === null) {
+                apiResponse.notFoundResponse(res, "Patient not exists with this id");
+            } else {
+
+                if (req.body.name) {
+                    foundPatient.name = req.body.name;
+                }
+                if (req.body.address) {
+                    foundPatient.address = req.body.address;
+                }
+
+                if (req.body.mobile) {
+                    foundPatient.mobile = req.body.mobile;
+                }
+
+                if (req.body.email) {
+                    foundPatient.email = req.body.email;
+                }
+
+                if (req.body.birthdate) {
+                    foundPatient.birthdate = req.body.birthdate;
+                }
+                if (req.body.gender) {
+                    foundPatient.gender = req.body.gender;
+                }
+
+                if (req.body.photo) {
+                    foundPatient.photo = req.body.photo;
+                }
+
+
+                //update patient.
+                Patient.findByIdAndUpdate(
+                    req.params.id,
+                    foundPatient,
+                    {},
+                    function (err) {
+                        if (err) {
+                            apiResponse.ErrorResponse(res, err);
+                        } else {
+                            apiResponse.successResponseWithData(res, "Patient update Success.", foundPatient);
+                        }
+                    }
+                );
+            }
+        });
+
+    }
+
+
+}
+
 
 module.exports.addPatient = (req, res, next) => {
     console.log('POST request: patient params = >' + JSON.stringify(req.params));
@@ -47,6 +112,10 @@ module.exports.addPatient = (req, res, next) => {
         apiResponse.ErrorResponse(res, 'Address must be supplied')
 
     }
+    if (req.body.email === undefined) {
+        apiResponse.ErrorResponse(res, 'email must be supplied')
+
+    }
     if (req.body.birthdate === undefined) {
         apiResponse.ErrorResponse(res, 'birthdate must be supplied')
 
@@ -57,29 +126,37 @@ module.exports.addPatient = (req, res, next) => {
 
     }
 
-    if (req.body.phone === undefined) {
-        apiResponse.ErrorResponse(res, "phone must be supplied")
+    if (req.body.mobile === undefined) {
+        apiResponse.ErrorResponse(res, "mobile must be supplied")
 
     }
+
     // Creating new Patient.
     var newPatients = new Patient({
         name: req.body.name,
         address: req.body.address,
+        mobile: req.body.mobile,
+        email: req.body.email,
         birthdate: req.body.birthdate,
         gender: req.body.gender,
-        phone: req.body.phone,
         photo: req.body.photo,
         tests: [{
-            title: 'khalid'
-        },
-            {
-                title: 'hisahm'
-            },
-            {
-                title: 'asa'
-            }]
+            date: '2022-11-28T14:51:06.157Z',
+            type: 'blood_pressure',
+            reading: '60/150'
+        }]
     });
-    newPatients.tests.push({title:"test hisham"})
+    var readingValue = newPatients.tests[newPatients.tests.length - 1].reading
+    console.log('reading' + readingValue)
+    console.log('tests size' + newPatients.tests.length - 1)
+    if (readingValue == '50/90') {
+        newPatients.condition = 'normal'
+    } else if (readingValue == '60/150') {
+        newPatients.condition = 'critical'
+
+    }
+
+    // newPatients.tests.push({title: "test hisham"})
 
 
     //save
