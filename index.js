@@ -6,8 +6,8 @@
 
 const restify = require('restify')
 const mongoose = require('mongoose')
-const config = require('./config/config')
-const apiRouter = require("./routes/patients");
+const config = require('./config/Config')
+const apiRouter = require("./routes/PatientsRouter");
 
 
 const server = restify.createServer();

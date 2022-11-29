@@ -1,9 +1,9 @@
 exports.successResponse = function (res, msg) {
-    var data = {
-        status: 1,
-        message: msg
-    };
-    return res.status(200).json(data);
+    // var data = {
+    //     status: 1,
+    //     message: msg
+    // };
+    // return res.status(200).json(data);
 };
 
 exports.successResponseWithData = function (res, msg, data) {
@@ -21,15 +21,15 @@ exports.ErrorResponse = function (res, msg) {
         status: 0,
         message: msg,
     };
-    res.status(500).send(data);
+    res.send(400,data);
 };
 
 exports.notFoundResponse = function (res, msg) {
-    var data = {
-        status: 0,
-        message: msg,
-    };
-    return res.status(404).json(data);
+    // var data = {
+    //     status: 0,
+    //     message: msg,
+    // };
+    // return res.status(404).json(data);
 };
 
 exports.validationErrorWithData = function (res, msg, data) {
@@ -38,13 +38,13 @@ exports.validationErrorWithData = function (res, msg, data) {
         message: msg,
         data: data
     };
-    res.status(400).send(resData);
+    res.send(400,resData);
 };
 
 exports.unauthorizedResponse = function (res, msg) {
-    var data = {
-        status: 0,
-        message: msg,
-    };
-    return res.status(401).json(data);
+    // var data = {
+    //     status: 0,
+    //     message: msg,
+    // };
+    // return res.send(401,data);
 };

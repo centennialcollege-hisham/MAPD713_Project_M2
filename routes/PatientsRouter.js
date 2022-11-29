@@ -31,14 +31,14 @@ module.exports = server => {
     // Get all tests
     server.get('/patients/:id/tests', recordController.getRecords)
 
-//     // Get details test for patient
-    server.get('/patients/:id/tests/:testId', recordController.getRecordsById)
-//
-// // Get details test for patient
-//     server.post('/patients/:id/tests', recordController.getRecords)
-//
-// // Get details test for patient
-//     server.put('/patients/:id/tests/:testId', recordController.getRecords)
+    // Get details test for patient
+    server.get('/patients/:id/tests/:testId', recordController.getRecord)
+
+// // add test for patient
+    server.post('/patients/:id/tests', recordController.addRecord)
+
+// Get update test for patient
+    server.put('/patients/:id/tests/:testId', recordController.updateRecord)
 //
 // // Get details test for patient
 //     server.del('/patients/:id/tests/:testId', recordController.getRecords)

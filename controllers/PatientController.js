@@ -1,6 +1,7 @@
 const Patient = require("../model/Patient");
 const apiResponse = require("../helpers/apiResponse");
 var mongoose = require("mongoose");
+const errors = require('restify-errors');
 
 
 // Get all patients
@@ -21,44 +22,16 @@ module.exports.getPatient = async (req, res, next) => {
     // console.log('GET request: patients/' + req.params.id);
     // Find a single patient by their id
 
-    //
-    // let result = await Patient.findOne({_id: req.params.id})
-    //
-    // if (result) {
-    //     apiResponse.successResponseWithData(res, "", result)
-    // } else {
-    //     apiResponse.validationErrorWithData(res, "", result)
-    // }
+
+    let result = await Patient.findOne({_id: req.params.id})
+
+    if (result) {
+        apiResponse.successResponseWithData(res, "", result)
+    } else {
+        apiResponse.validationErrorWithData(res, "", result)
+    }
 
 
-    let data = await Patient.findOne({
-            "_id": req.params.id, // patient Id
-        }, {
-            tests: {"$elemMatch": {"_id": mongoose.Types.ObjectId("6382c7eaeb7575253f0c97b5")}} // patient record id
-        }
-    )
-
-    if (!data)
-        res.send(data);
-
-    res.send(200,data.tests[0]);
-
-
-}
-
-// get tests
-module.exports.addTest = (req, res, next) => {
-    var update = {tests: req.body}
-    var filter = {_id: req.params.id}
-    // Find a single patient by their id
-    Patient.findOneAndUpdate(filter, update).exec(
-        function (error, patient) {
-            if (patient) {
-                res.send(patient[tests])
-            } else {
-                res.send(404)
-            }
-        })
 }
 
 
@@ -67,21 +40,26 @@ module.exports.addPatient = (req, res, next) => {
     console.log('POST request: patient body = >' + JSON.stringify(req.body));
 
     if (req.body.name === undefined) {
-        return next(new errors.BadRequestError('Name must be supplied'))
+        apiResponse.ErrorResponse(res, 'Name must be supplied')
+
     }
     if (req.body.address === undefined) {
-        return next(new errors.BadRequestError('Address must be supplied'))
+        apiResponse.ErrorResponse(res, 'Address must be supplied')
+
     }
     if (req.body.birthdate === undefined) {
-        return next(new errors.BadRequestError('birthdate must be supplied'))
+        apiResponse.ErrorResponse(res, 'birthdate must be supplied')
+
     }
 
     if (req.body.gender === undefined) {
-        return next(new errors.BadRequestError('gender must be supplied'))
+        apiResponse.ErrorResponse(res, "gender must be supplied")
+
     }
 
     if (req.body.phone === undefined) {
-        return next(new errors.BadRequestError('phone must be supplied'))
+        apiResponse.ErrorResponse(res, "phone must be supplied")
+
     }
     // Creating new Patient.
     var newPatients = new Patient({
@@ -101,6 +79,7 @@ module.exports.addPatient = (req, res, next) => {
                 title: 'asa'
             }]
     });
+    newPatients.tests.push({title:"test hisham"})
 
 
     //save
