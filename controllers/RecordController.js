@@ -36,14 +36,14 @@ module.exports.getRecord = async (req, res, next) => {
 module.exports.addRecord = async (req, res, next) => {
     let patient = await Patient.findById(req.params.id)
 
-    if (req.params.type === undefined) {
+    if (req.body.type === undefined) {
         apiResponse.ErrorResponse(res, 'type must be supplied')
     }
-    if (req.params.reading === undefined) {
+    if (req.body.reading === undefined) {
         apiResponse.ErrorResponse(res, 'reading must be supplied')
     }
 
-    patient.tests.push({type: req.params.type,reading: req.params.reading})
+    patient.tests.push({type: req.body.type,reading: req.body.reading})
     // Creating new Patient.
 
 
@@ -59,7 +59,8 @@ module.exports.addRecord = async (req, res, next) => {
 module.exports.updateRecord = async (req, res, next) => {
     let data = Patient.findOneAndUpdate({_id: req.params.id, 'tests._id': req.params.testId}, {
         '$set': {
-            'tests.$.type': req.params.type
+            'tests.$.type': req.body.type,
+            'tests.$.reading': req.body.reading,
         }
     }, function (err) {
         if (err) return next(new Error(JSON.stringify(err.e)))
