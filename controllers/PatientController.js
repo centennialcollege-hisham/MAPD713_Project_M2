@@ -97,6 +97,11 @@ module.exports.addPatient = (req, res, next) => {
     console.log('POST request: patient params = >' + JSON.stringify(req.params));
     console.log('POST request: patient body = >' + JSON.stringify(req.body));
 
+    if(req.body === undefined){
+        apiResponse.ErrorResponse(res, 'Body must be supplied')
+        return;
+    }
+
     if (req.body.name === undefined) {
         apiResponse.ErrorResponse(res, 'Name must be supplied')
         return
