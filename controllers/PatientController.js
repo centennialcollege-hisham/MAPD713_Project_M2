@@ -161,6 +161,6 @@ module.exports.deletePatient = (req, res, next) => {
     console.log('DEL request: patients/' + req.params.id);
     Patient.remove({_id: req.params.id}, function (error, result) {
         if (error) return next(new Error(JSON.stringify(error.errors)))
-        res.send()
+        apiResponse.successResponse(res,"Patient Deleted")
     });
 }
