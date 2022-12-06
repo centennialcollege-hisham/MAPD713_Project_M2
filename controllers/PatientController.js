@@ -137,7 +137,7 @@ module.exports.addPatient = (req, res, next) => {
 
     if (req.body.image === undefined) {
 
-        req.body.image = "https://source.unsplash.com/random/75×75/?person,face"
+        req.body.image = "https://source.unsplash.com/random/75×75/?person,face"+new Date().getTime()
 
     }
 
