@@ -99,23 +99,28 @@ module.exports.addPatient = (req, res, next) => {
 
     if (req.body.name === undefined) {
         apiResponse.ErrorResponse(res, 'Name must be supplied')
+        return
 
     }
     if (req.body.address === undefined) {
         apiResponse.ErrorResponse(res, 'Address must be supplied')
+        return
 
     }
     if (req.body.email === undefined) {
         apiResponse.ErrorResponse(res, 'email must be supplied')
+        return
 
     }
     if (req.body.birthdate === undefined) {
         apiResponse.ErrorResponse(res, 'birthdate must be supplied')
+        return
 
     }
 
     if (req.body.gender === undefined) {
         apiResponse.ErrorResponse(res, "gender must be supplied")
+        return
 
     }
 
@@ -161,6 +166,6 @@ module.exports.deletePatient = (req, res, next) => {
     console.log('DEL request: patients/' + req.params.id);
     Patient.remove({_id: req.params.id}, function (error, result) {
         if (error) return next(new Error(JSON.stringify(error.errors)))
-        apiResponse.successResponse(res,"Patient Deleted")
+        apiResponse.successResponse(res, "Patient Deleted")
     });
 }
