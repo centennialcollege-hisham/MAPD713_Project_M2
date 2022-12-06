@@ -97,7 +97,7 @@ module.exports.addPatient = (req, res, next) => {
     console.log('POST request: patient params = >' + JSON.stringify(req.params));
     console.log('POST request: patient body = >' + JSON.stringify(req.body));
 
-    if(req.body === undefined){
+    if (req.body === undefined) {
         apiResponse.ErrorResponse(res, 'Body must be supplied')
         return;
     }
@@ -133,6 +133,14 @@ module.exports.addPatient = (req, res, next) => {
         apiResponse.ErrorResponse(res, "mobile must be supplied")
 
     }
+
+
+    if (req.body.image === undefined) {
+
+        req.body.image = "https://source.unsplash.com/random/75×75/?person,face"
+
+    }
+
 
     // Creating new Patient.
     var newPatients = new Patient({
