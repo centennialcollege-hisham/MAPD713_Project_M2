@@ -53,6 +53,29 @@ module.exports.getPatient = async (req, res, next) => {
 
     let result = await Patient.findOne({_id: req.params.id})
 
+
+
+    if (result.tests.length >= 1) {
+        var positionTest = 0;
+        var positionLastBloodPressure = -1
+        result.tests.forEach(function (test) {
+            if (test.type == "blood_pressure") {
+                positionLastBloodPressure = positionTest
+            }
+            positionTest++;
+        });
+        if (positionLastBloodPressure >= 0) {
+            const readings = result.tests[positionLastBloodPressure].reading.split("/").map(Number)
+            if ((readings[0] < 50 || readings[0] > 60) && (readings[1] < 90 || readings[1] > 150)) {
+                result.condition = "critical"
+            } else {
+                result.condition = "normal"
+            }
+        }
+    }
+
+
+
     if (result) {
         apiResponse.successResponseWithData(res, "", result)
     } else {
