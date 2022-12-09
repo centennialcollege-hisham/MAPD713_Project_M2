@@ -9,6 +9,39 @@ module.exports.getPatients = (req, res, next) => {
     Patient.find({}).exec(function (error, result) {
         if (error) return next(new Error(JSON.stringify(error.errors)))
 
+// ●	REST API Service shall allow health care providers to find out any patients in critical condition
+// (e.g. patients with Blood Pressure less than 50/90 or greater than 60/150).
+
+
+        var positionPatient = 0;
+        result.forEach(function (item) {
+            if (item.tests.length >= 1) {
+                var positionTest = 0;
+                var positionLastBloodPressure = -1
+                item.tests.forEach(function (test) {
+                    if (test.type == "blood_pressure") {
+                        positionLastBloodPressure = positionTest
+                    }
+                    positionTest++;
+                });
+                if (positionLastBloodPressure >= 0) {
+                    const readings = result[positionPatient].tests[positionLastBloodPressure].reading.split("/").map(Number)
+                    if ((readings[0] < 50 || readings[0] > 60) && (readings[1] < 90 || readings[1] > 150)) {
+                        result[positionPatient].condition = "critical"
+                    } else {
+                        result[positionPatient].condition = "normal"
+                    }
+                }
+            }
+
+            // change item in patient here
+            positionPatient++;
+
+        });
+
+
+        // inverse tests and patient
+
         apiResponse.successResponseWithData(res, "", result)
 
     });
@@ -68,6 +101,10 @@ module.exports.updatePatient = async (req, res, next) => {
 
                 if (req.body.photo) {
                     foundPatient.photo = req.body.photo;
+                }
+
+                if (req.body.photo === "random") {
+                    foundPatient.photo = "https://source.unsplash.com/random/75×75/?person,face" + new Date().getTime()
                 }
 
 
@@ -137,7 +174,7 @@ module.exports.addPatient = (req, res, next) => {
 
     if (req.body.photo === undefined) {
 
-        req.body.photo = "https://source.unsplash.com/random/75×75/?person,face"+new Date().getTime()
+        req.body.photo = "https://source.unsplash.com/random/75×75/?person,face" + new Date().getTime()
 
     }
 
@@ -154,18 +191,9 @@ module.exports.addPatient = (req, res, next) => {
         tests: [{
             date: '2022-11-28T14:51:06.157Z',
             type: 'blood_pressure',
-            reading: '60/150'
+            reading: '50/90'
         }]
     });
-    var readingValue = newPatients.tests[newPatients.tests.length - 1].reading
-
-    if (readingValue == '50/90') {
-        newPatients.condition = 'normal'
-    } else if (readingValue == '60/150') {
-        newPatients.condition = 'critical'
-
-    }
-
 
     //save
     newPatients.save(function (error, result) {
