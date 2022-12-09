@@ -26,7 +26,7 @@ module.exports.getPatients = (req, res, next) => {
                 });
                 if (positionLastBloodPressure >= 0) {
                     const readings = result[positionPatient].tests[positionLastBloodPressure].reading.split("/").map(Number)
-                    if ((readings[0] < 50 || readings[0] > 60) && (readings[1] < 90 || readings[1] > 150)) {
+                    if (isCritical(readings)) {
                         result[positionPatient].condition = "critical"
                     } else {
                         result[positionPatient].condition = "normal"
@@ -47,12 +47,15 @@ module.exports.getPatients = (req, res, next) => {
     });
 }
 
+function isCritical(readings) {
+    return (readings[0] < 50 || readings[0] > 60) || (readings[1] < 90 || readings[1] > 150);
+}
+
 // get patient
 module.exports.getPatient = async (req, res, next) => {
 
 
     let result = await Patient.findOne({_id: req.params.id})
-
 
 
     if (result.tests.length >= 1) {
@@ -66,14 +69,13 @@ module.exports.getPatient = async (req, res, next) => {
         });
         if (positionLastBloodPressure >= 0) {
             const readings = result.tests[positionLastBloodPressure].reading.split("/").map(Number)
-            if ((readings[0] < 50 || readings[0] > 60) && (readings[1] < 90 || readings[1] > 150)) {
+            if (isCritical(readings)) {
                 result.condition = "critical"
             } else {
                 result.condition = "normal"
             }
         }
     }
-
 
 
     if (result) {
