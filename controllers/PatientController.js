@@ -35,14 +35,19 @@ module.exports.getPatients = (req, res, next) => {
             }
 
             // change item in patient here
+            result[positionPatient].tests = result[positionPatient].tests.reverse
+
+
             positionPatient++;
 
         });
 
 
-        // inverse tests and patient
+        const resultReversed = result;
+        result.forEach(item => item.tests.reverse());
+        resultReversed.reverse();
 
-        apiResponse.successResponseWithData(res, "", result)
+        apiResponse.successResponseWithData(res, "", resultReversed)
 
     });
 }
@@ -77,7 +82,7 @@ module.exports.getPatient = async (req, res, next) => {
         }
     }
 
-
+    result.tests.reverse()
     if (result) {
         apiResponse.successResponseWithData(res, "", result)
     } else {
