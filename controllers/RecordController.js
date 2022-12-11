@@ -10,7 +10,7 @@ module.exports.getRecords = async (req, res, next) => {
     if (!data)
         apiResponse.validationErrorWithData(res, "", data)
 
-    apiResponse.successResponseWithData(res, "", data.tests)
+    apiResponse.successResponseWithData(res, "", data.tests.reverse)
 }
 
 
@@ -45,7 +45,9 @@ module.exports.addRecord = async (req, res, next) => {
         return
     }
 
-    patient.tests.push({type: req.body.type, reading: req.body.reading})
+    const date = new Date().toLocaleString()
+
+    patient.tests.push({type: req.body.type, reading: req.body.reading,date:date})
     // Creating new Patient.
 
 
@@ -74,6 +76,7 @@ module.exports.updateRecord = async (req, res, next) => {
         '$set': {
             'tests.$.type': req.body.type,
             'tests.$.reading': req.body.reading,
+            'tests.$.date': new Date().toLocaleString()
         }
     }, function (err) {
         if (err) return next(new Error(JSON.stringify(err.e)))

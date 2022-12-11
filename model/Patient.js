@@ -14,7 +14,7 @@ let patientModel = mongoose.Schema({
             type: {type: String, enum: ['blood_pressure', 'respiratory_rate', 'blood_oxygen_level', 'heartbeat_rate']},
             reading:{ type: String},
 
-        }
+        }, {timestamps: true}
     ]
 }, {timestamps: true}, {
     collection: "patientApp"

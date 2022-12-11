@@ -19,6 +19,7 @@ module.exports.getPatients = (req, res, next) => {
                 var positionTest = 0;
                 var positionLastBloodPressure = -1
                 item.tests.forEach(function (test) {
+
                     if (test.type == "blood_pressure") {
                         positionLastBloodPressure = positionTest
                     }
@@ -36,6 +37,8 @@ module.exports.getPatients = (req, res, next) => {
 
             // change item in patient here
             result[positionPatient].tests = result[positionPatient].tests.reverse
+
+
 
 
             positionPatient++;
@@ -218,11 +221,7 @@ module.exports.addPatient = (req, res, next) => {
         birthdate: req.body.birthdate,
         gender: req.body.gender,
         photo: req.body.photo,
-        tests: [{
-            date: '2022-11-28T14:51:06.157Z',
-            type: 'blood_pressure',
-            reading: '50/90'
-        }]
+        tests: []
     });
 
     //save
