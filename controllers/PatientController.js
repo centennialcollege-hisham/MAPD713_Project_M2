@@ -39,8 +39,6 @@ module.exports.getPatients = (req, res, next) => {
             result[positionPatient].tests = result[positionPatient].tests.reverse
 
 
-
-
             positionPatient++;
 
         });
@@ -205,7 +203,8 @@ module.exports.addPatient = (req, res, next) => {
     }
 
 
-    if (req.body.photo === undefined) {
+
+    if (req.body.photo === undefined || req.body.photo === "random") {
 
         req.body.photo = "https://source.unsplash.com/random/75×75/?person,face" + new Date().getTime()
 
